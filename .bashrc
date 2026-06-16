@@ -12,10 +12,8 @@ fi
 
 alias mgcb-editor='/home/jo/.dotnet/tools/mgcb-editor'
 
-alias ls='eza --group-directories-first --icons'
-alias lsa='eza -a --group-directories-first --icons'
-alias ll='eza -l --group-directories-first --icons'
-alias lla='eza -la --group-directories-first --icons'
+alias ls='eza -l --group-directories-first --icons'
+alias lsa='eza -la --group-directories-first --icons'
 alias cat='bat'
 
 # alias ls='ls --color=auto'
