@@ -19,8 +19,9 @@ Conduct a thorough requirements-gathering interview to extract all information n
 1. Carefully read my draft specifications below. **If the draft is empty** (I invoked the command without arguments), do not invent requirements and do not treat earlier conversation as the draft — first ask me to paste or describe the task, then run the full process on my answer.
 2. Determine whether this is a **new project** or an **evolution of an existing codebase** — ask if it's not clear.
 3. **For an existing codebase, explore it yourself before asking anything**: read the build files, dependency manifests, DI setup, test framework, folder and naming conventions, and the modules the work will touch. Never ask a question the code already answers — present findings as confirmations instead (e.g., "I see Jest across tests/ — I'll follow that unless you object"). Reserve questions for what the code cannot reveal: intent, priorities, breaking-change tolerance, constraints, preferences.
-4. Identify all gaps, ambiguities, contradictions, and unstated assumptions in the functional and technical scope.
-5. **Beyond-the-draft sweep** — independently of what the draft mentions, walk this checklist and classify each dimension as *covered by the draft*, *needs a question*, or *not applicable (one-line reason)*: security & authentication/authorization · input validation & abuse cases · performance & scalability targets · concurrency · error handling & resilience (timeouts, retries, partial failures) · UX edge cases (empty/loading/error/offline states) · accessibility & internationalization · observability (logging, metrics, diagnostics) · data migration & compatibility · deployment & operations · licensing & third-party dependencies · testing · documentation. The *needs a question* items feed Phase 2; every dimension's resolution is reported in the Phase 3 summary.
+4. **Load applicable convention skills**: check the available skills for house-convention or stack-specific skills matching the task's technology (e.g., the dotnet/avalonia skills for .NET work) and read them before questioning. Treat their conventions as authoritative defaults — never ask what they already resolve. Where a convention states a default but allows deviation, make the convention default the "(Recommended)" option and open its rationale by citing the skill; where the existing codebase contradicts a convention, ask whether to align or stay consistent.
+5. Identify all gaps, ambiguities, contradictions, and unstated assumptions in the functional and technical scope.
+6. **Beyond-the-draft sweep** — independently of what the draft mentions, walk this checklist and classify each dimension as *covered by the draft*, *needs a question*, or *not applicable (one-line reason)*: security & authentication/authorization · input validation & abuse cases · performance & scalability targets · concurrency · error handling & resilience (timeouts, retries, partial failures) · UX edge cases (empty/loading/error/offline states) · accessibility & internationalization · observability (logging, metrics, diagnostics) · data migration & compatibility · deployment & operations · licensing & third-party dependencies · testing · documentation. The *needs a question* items feed Phase 2; every dimension's resolution is reported in the Phase 3 summary.
 
 ## Phase 2: Iterative Questioning
 
@@ -37,6 +38,7 @@ Conduct a thorough requirements-gathering interview to extract all information n
 - Then move to **medium-impact** questions (interface design, data structures, error handling, integration points).
 - Finally cover **detail-level** questions (naming conventions, formatting, edge cases).
 - For work within an existing codebase, ask about: existing patterns to follow, modules/files impacted, breaking-changes tolerance, migration strategy, how the new work should coexist with what's already there — and confirm any project-management conventions the Execution Standards defer to (existing roadmap or work-item ID scheme, documentation layout, base branch, branch naming).
+- **Do not ask** about anything an applicable convention skill resolves unambiguously — apply it and record it in the Phase 3 summary — unless the existing codebase contradicts it and we must decide whether to align or stay consistent.
 - Adapt follow-up questions based on my answers; if an answer reveals new ambiguities, dig deeper with additional rounds.
 
 ### Convergence & closing
@@ -47,7 +49,7 @@ Conduct a thorough requirements-gathering interview to extract all information n
 ## Phase 3: Validation
 Once you believe you have enough information:
 1. Provide a **detailed summary of the consolidated requirements** covering: objective; context (new project or evolution); existing codebase constraints if applicable; complete functional requirements; technical stack and constraints; architecture and design patterns to follow; integration points and impacted areas; public interfaces / API contracts (if applicable); backward compatibility and migration requirements (if applicable); error handling strategy; testing requirements (unit, integration, coverage targets); documentation requirements; code quality standards; expected file/module structure; acceptance criteria; and the **proposed work-item breakdown** — ID(s), title, single- vs multi-phase split with phase titles, and branch name(s) (per the Execution Standards).
-2. **Structure the summary by provenance** so every point's origin is auditable: **Decisions you made** · **Recommendations you accepted** (including every "you decide" delegation) · **Assumptions & defaults I applied without asking** (low-impact only) · **Beyond-the-draft dimensions raised and how each was resolved** (one line each, including those judged not applicable).
+2. **Structure the summary by provenance** so every point's origin is auditable: **Decisions you made** · **Recommendations you accepted** (including every "you decide" delegation) · **House conventions applied without asking** (from convention skills, if any) · **Assumptions & defaults I applied without asking** (low-impact only) · **Beyond-the-draft dimensions raised and how each was resolved** (one line each, including those judged not applicable).
 3. Wait for my confirmation before proceeding. If I give corrections: update the summary, re-present at least the changed sections, and wait for confirmation again — only a summary I have explicitly confirmed becomes the Phase 4 specification.
 
 ## Phase 4: Execution
@@ -56,7 +58,6 @@ After my validation, immediately begin executing the development task using the 
 If the session is in plan mode, present the Phase 3 validated summary as the implementation plan and obtain approval (ExitPlanMode) before anything else — branch creation, file writes, and roadmap updates all wait for that approval. In other permission modes, expect the first `git switch -c` and file writes to raise permission prompts; treat them as harness mechanics, not as a reason to change approach.
 
 # Execution Standards
-<!-- Kept manually in sync with the twin Execution Standards block in interview-dotnet.md — apply any change to BOTH files. -->
 These standards govern *how* you carry out the implementation in Phase 4. If the existing codebase already enforces its own conventions (documentation layout, branch naming, an existing roadmap or work-item ID scheme, etc.), those take precedence over the defaults here — confirm any such conventions during the interview.
 
 **A "dev" is one deliverable unit of work — a single-phase item, or one phase of a multi-phase item.** Each dev gets its own branch, its own roadmap status update, and its own suggested commit message.
@@ -157,7 +158,7 @@ Commit description:
 - When you do delegate: (1) include in each sub-agent's prompt the interface contract it must honor, the relevant validated requirements from the interview, and the exact target paths; (2) sub-agents write code and tests only — all git actions, roadmap/plan updates, and commit messages remain yours; (3) after integrating sub-agent output, run the full build and test suite yourself before declaring the dev done.
 
 # Rules
-- **Never *silently* assume.** For every open point, either ask, or — for low-impact details only — apply your recommended default and list it explicitly under "Assumptions & defaults I applied" in the Phase 3 summary. A "you decide" answer from me is an explicit decision, not an assumption.
+- **Never *silently* assume** — except where an applicable convention skill resolves the question: apply it and list it under "House conventions applied" in the Phase 3 summary. For every remaining open point, either ask, or — for low-impact details only — apply your recommended default and list it explicitly under "Assumptions & defaults I applied" in the Phase 3 summary. A "you decide" answer from me is an explicit decision, not an assumption.
 - One decision per question; group related questions into the same round — never merge several decisions into one compound question.
 - Use clear, jargon-free language unless I demonstrate technical expertise.
 - If my answers reveal new ambiguities, dig deeper.
