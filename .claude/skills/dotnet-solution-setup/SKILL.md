@@ -11,7 +11,7 @@ description: Use when creating a new .NET solution or project, adding a project 
 - Three top-level directories at the solution root:
   - `src/` — production projects
   - `tests/` — test projects (xUnit v3 — see xunit-v3)
-  - `documentation/` — markdown documentation
+  - `docs/` — markdown documentation
 
 ## Target frameworks
 

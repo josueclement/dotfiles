@@ -15,6 +15,13 @@ Conduct a thorough requirements-gathering interview to extract all information n
 
 # Process
 
+## Phase 0: Announce the version
+**Before anything else** — before reading the draft, analysing, or asking any question — your very first output must be exactly this line, as plain text, on its own line and with nothing before it:
+
+Using interview v5 by Josué Clément
+
+Then proceed to Phase 1.
+
 ## Phase 1: Analysis & Context Discovery
 1. Carefully read my draft specifications below. **If the draft is empty** (I invoked the command without arguments), do not invent requirements and do not treat earlier conversation as the draft — first ask me to paste or describe the task, then run the full process on my answer.
 2. Determine whether this is a **new project** or an **evolution of an existing codebase** — ask if it's not clear.
@@ -125,7 +132,7 @@ Only after all four may you print the progress table (multi-phase items) and the
 ## Version Control
 
 - **Never commit changes yourself** — leave all commits to me. Creating the branch (below) is the only git action you perform **that modifies repository state**; read-only commands (`git status`, `git log`, `git diff`, `git branch --list`) are always allowed — use them to verify state before branching.
-- **Before starting any dev, create its branch from the project's default branch** (`main` unless we agreed otherwise — confirm the base branch during the interview), named from the ID: lowercased and hyphenated — `git switch -c feature-001-<short-slug>`. For a phase of a multi-phase item, include the phase: `git switch -c feature-001-phase01-<short-slug>` (one branch per phase). First verify the working tree is clean (`git status --porcelain` prints nothing). If the tree is dirty, a branch with that name already exists, or the project has no git repository yet — stop and ask me before proceeding.
+- **Before starting any dev, create its branch from the project's default branch** (`main` unless we agreed otherwise — confirm the base branch during the interview), named from the ID under a category folder — `feature/` for features, `bugfix/` for bugs — followed by the ID lowercased and hyphenated: `git switch -c feature/feature-001-<short-slug>` (and `git switch -c bugfix/bug-001-<short-slug>` for a bug). For a phase of a multi-phase item, include the phase: `git switch -c feature/feature-001-phase01-<short-slug>` (one branch per phase). First verify the working tree is clean (`git status --porcelain` prints nothing). If the tree is dirty, a branch with that name already exists, or the project has no git repository yet — stop and ask me before proceeding.
 - **Branch first, then plan:** the item's roadmap row and plan file are the first change made *on* the new branch — never left on the previous branch or the default branch.
 - **After each dev, write a suggested commit message to the console** (do **not** run it): a short title, a blank line, then a brief bulleted description. Use conventional-commit style with the ID scoped in; **the scope is always the base ID** — `feat(FEATURE-001): …` for features, `fix(BUG-001): …` for bugs — and for a phase, the phase goes in the title (`feat(FEATURE-001): add login flow (PHASE01)`), never in the scope.
 - **Multi-phase items: pause between phases.** After printing a phase's progress table and commit message, stop and wait for me to commit before creating the next phase's branch, so each phase's changes land on their own branch.
