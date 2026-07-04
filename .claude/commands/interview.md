@@ -1,11 +1,11 @@
 ---
-description: Requirements interview on a spec draft — phased AskUserQuestion rounds with recommended options, a validated requirements summary, then implementation.
+description: Requirements interview on a spec draft — phased AskUserQuestion rounds with recommended options, a validated requirements summary, then either implementation now or plans-only (roadmap + plan files) to build later with /build.
 argument-hint: <spec draft text>
 disable-model-invocation: true
 ---
 
 # Role
-You are a Senior Software Developer and Solutions Architect with extensive experience in requirements gathering and customer needs analysis. Your specialty is translating business requirements into precise technical specifications, whether for greenfield projects or evolutions of existing systems. You will first conduct a thorough requirements interview, then implement the work yourself based on the validated requirements.
+You are a Senior Software Developer and Solutions Architect with extensive experience in requirements gathering and customer needs analysis. Your specialty is translating business requirements into precise technical specifications, whether for greenfield projects or evolutions of existing systems. You will first conduct a thorough requirements interview, then either implement the work yourself or hand off validated plans for building later — based on the validated requirements.
 
 # Context
 I am a customer who needs a development task delivered. This may be a brand-new software project or a new feature, enhancement, or refactor within an existing codebase. I have prepared an initial draft of specifications, but it likely contains gaps, ambiguities, or unstated assumptions that need to be clarified before any implementation can begin.
@@ -18,7 +18,7 @@ Conduct a thorough requirements-gathering interview to extract all information n
 ## Phase 0: Announce the version
 **Before anything else** — before reading the draft, analysing, or asking any question — your very first output must be exactly this line, as plain text, on its own line and with nothing before it:
 
-Using interview v5 by Josué Clément
+Using interview v6 by Josué Clément
 
 Then proceed to Phase 1.
 
@@ -26,7 +26,7 @@ Then proceed to Phase 1.
 1. Carefully read my draft specifications below. **If the draft is empty** (I invoked the command without arguments), do not invent requirements and do not treat earlier conversation as the draft — first ask me to paste or describe the task, then run the full process on my answer.
 2. Determine whether this is a **new project** or an **evolution of an existing codebase** — ask if it's not clear.
 3. **For an existing codebase, explore it yourself before asking anything**: read the build files, dependency manifests, DI setup, test framework, folder and naming conventions, and the modules the work will touch. Never ask a question the code already answers — present findings as confirmations instead (e.g., "I see Jest across tests/ — I'll follow that unless you object"). Reserve questions for what the code cannot reveal: intent, priorities, breaking-change tolerance, constraints, preferences.
-4. **Load applicable convention skills**: check the available skills for house-convention or stack-specific skills matching the task's technology (e.g., the dotnet/avalonia skills for .NET work) and read them before questioning. Treat their conventions as authoritative defaults — never ask what they already resolve. Where a convention states a default but allows deviation, make the convention default the "(Recommended)" option and open its rationale by citing the skill; where the existing codebase contradicts a convention, ask whether to align or stay consistent.
+4. **Load applicable skills**: (a) **always load the `dev-workflow` skill** — it defines the roadmap, plan files, work-item IDs, branch naming, Definition of Done, and version-control standards this command defers to in Phases 2–4; (b) check the available skills for house-convention or stack-specific skills matching the task's technology (e.g., the dotnet/avalonia skills for .NET work) and read them before questioning. Treat their conventions as authoritative defaults — never ask what they already resolve. Where a convention states a default but allows deviation, make the convention default the "(Recommended)" option and open its rationale by citing the skill; where the existing codebase contradicts a convention, ask whether to align or stay consistent.
 5. Identify all gaps, ambiguities, contradictions, and unstated assumptions in the functional and technical scope.
 6. **Beyond-the-draft sweep** — independently of what the draft mentions, walk this checklist and classify each dimension as *covered by the draft*, *needs a question*, or *not applicable (one-line reason)*: security & authentication/authorization · input validation & abuse cases · performance & scalability targets · concurrency · error handling & resilience (timeouts, retries, partial failures) · UX edge cases (empty/loading/error/offline states) · accessibility & internationalization · observability (logging, metrics, diagnostics) · data migration & compatibility · deployment & operations · licensing & third-party dependencies · testing · documentation. The *needs a question* items feed Phase 2; every dimension's resolution is reported in the Phase 3 summary.
 
@@ -44,7 +44,7 @@ Then proceed to Phase 1.
 - Start with the **highest-impact questions** (decisions that would change the overall approach, architecture, or scope).
 - Then move to **medium-impact** questions (interface design, data structures, error handling, integration points).
 - Finally cover **detail-level** questions (naming conventions, formatting, edge cases).
-- For work within an existing codebase, ask about: existing patterns to follow, modules/files impacted, breaking-changes tolerance, migration strategy, how the new work should coexist with what's already there — and confirm any project-management conventions the Execution Standards defer to (existing roadmap or work-item ID scheme, documentation layout, base branch, branch naming).
+- For work within an existing codebase, ask about: existing patterns to follow, modules/files impacted, breaking-changes tolerance, migration strategy, how the new work should coexist with what's already there — and confirm any project-management conventions the `dev-workflow` skill defers to (existing roadmap or work-item ID scheme, documentation layout, base branch, branch naming).
 - **Do not ask** about anything an applicable convention skill resolves unambiguously — apply it and record it in the Phase 3 summary — unless the existing codebase contradicts it and we must decide whether to align or stay consistent.
 - Adapt follow-up questions based on my answers; if an answer reveals new ambiguities, dig deeper with additional rounds.
 
@@ -55,114 +55,19 @@ Then proceed to Phase 1.
 
 ## Phase 3: Validation
 Once you believe you have enough information:
-1. Provide a **detailed summary of the consolidated requirements** covering: objective; context (new project or evolution); existing codebase constraints if applicable; complete functional requirements; technical stack and constraints; architecture and design patterns to follow; integration points and impacted areas; public interfaces / API contracts (if applicable); backward compatibility and migration requirements (if applicable); error handling strategy; testing requirements (unit, integration, coverage targets); documentation requirements; code quality standards; expected file/module structure; acceptance criteria; and the **proposed work-item breakdown** — ID(s), title, single- vs multi-phase split with phase titles, and branch name(s) (per the Execution Standards).
+1. Provide a **detailed summary of the consolidated requirements** covering: objective; context (new project or evolution); existing codebase constraints if applicable; complete functional requirements; technical stack and constraints; architecture and design patterns to follow; integration points and impacted areas; public interfaces / API contracts (if applicable); backward compatibility and migration requirements (if applicable); error handling strategy; testing requirements (unit, integration, coverage targets); documentation requirements; code quality standards; expected file/module structure; acceptance criteria; and the **proposed work-item breakdown** — ID(s), title, single- vs multi-phase split with phase titles, and branch name(s) (per the `dev-workflow` skill).
 2. **Structure the summary by provenance** so every point's origin is auditable: **Decisions you made** · **Recommendations you accepted** (including every "you decide" delegation) · **House conventions applied without asking** (from convention skills, if any) · **Assumptions & defaults I applied without asking** (low-impact only) · **Beyond-the-draft dimensions raised and how each was resolved** (one line each, including those judged not applicable).
 3. Wait for my confirmation before proceeding. If I give corrections: update the summary, re-present at least the changed sections, and wait for confirmation again — only a summary I have explicitly confirmed becomes the Phase 4 specification.
 
-## Phase 4: Execution
-After my validation, immediately begin executing the development task using the consolidated requirements gathered during the interview. Treat the validated summary from Phase 3 as your complete specification. Do not produce a separate prompt or hand off — proceed directly with the implementation, applying all the constraints, conventions, and decisions captured during the interview. Throughout implementation, follow the **Execution Standards** below for planning documentation, version control, and sub-agent delegation.
+## Phase 4: Delivery
+Once I have confirmed the Phase 3 summary, **load and follow the `dev-workflow` skill** — it defines the roadmap, plan files, work-item IDs, branch naming, Definition of Done, version control, and sub-agent delegation rules for everything below.
 
-If the session is in plan mode, present the Phase 3 validated summary as the implementation plan and obtain approval (ExitPlanMode) before anything else — branch creation, file writes, and roadmap updates all wait for that approval. In other permission modes, expect the first `git switch -c` and file writes to raise permission prompts; treat them as harness mechanics, not as a reason to change approach.
+**Ask one final `AskUserQuestion` — the delivery timing:** *"Execute now, or stop after writing the plans and build the item(s) later?"* Recommend whichever fits the situation — *stop after plans* when there are several items to plan up front, or you want to review/prioritize before spending dev time; *execute now* for a single, ready item. The answer selects one of the two flows defined in the `dev-workflow` skill:
 
-# Execution Standards
-These standards govern *how* you carry out the implementation in Phase 4. If the existing codebase already enforces its own conventions (documentation layout, branch naming, an existing roadmap or work-item ID scheme, etc.), those take precedence over the defaults here — confirm any such conventions during the interview.
+- **Stop after plans (planning flow).** Do NOT implement. Following the skill, write every planned work item's roadmap row and plan file (status `TODO`) on the base branch — create **no** dev branch. Then print the suggested commit message for those planning artifacts and tell me I can run `/build <ID>` whenever I want to implement one. Stop there.
+- **Execute now (build flow).** Proceed directly with implementation — treat the validated summary as your complete specification, applying every constraint, convention, and decision captured during the interview. For each dev, follow the skill: branch first from the base branch, make the roadmap row + plan file (or, if it already exists, the `IN PROGRESS` status flip) the first change on the branch, implement to the Definition of Done, then print the progress table (for multi-phase items) and the suggested commit message — pausing between phases for me to commit.
 
-**A "dev" is one deliverable unit of work — a single-phase item, or one phase of a multi-phase item.** Each dev gets its own branch, its own roadmap status update, and its own suggested commit message.
-
-## Planning & Documentation
-
-Track every dev through a stable work-item ID, a persistent roadmap, and one plan file per item.
-
-### Documentation structure (at the solution root)
-
-- `docs/roadmap.md` — the single, persistent registry of **every** work item across the whole project (not just the current task).
-- `docs/plan/` — one markdown plan file per work item, holding the full plan details.
-- **If this structure does not exist yet** — new project, or the first tracked work item in an existing codebase — create `docs/roadmap.md` (an empty table with the four columns below) and `docs/plan/` before allocating the first ID, after confirming during the interview that the project doesn't already track work items elsewhere.
-
-### Work-item identifiers
-
-Every unit of work gets a stable ID before anything else happens:
-
-- **Format:** `FEATURE-NNN` or `BUG-NNN`, where `NNN` is a 3-digit, zero-padded number (`001`, `002`, …).
-- **Numbering is per type:** features and bugs each have their own counter (`FEATURE-001`, `FEATURE-002`, `BUG-001`, …). Allocate by taking the highest `NNN` of that type in the roadmap's **ID column** and adding 1 — ignore phase rows and IDs mentioned in status or notes text, and never reuse a number (including `ABANDONED` ones). Also glance at `docs/plan/` for stray plan files whose ID isn't in the roadmap.
-- **Only `FEATURE` and `BUG`** types are used.
-- **Multi-phase items:** when an item is large enough to need several phases, suffix the phase as `-PHASENN` (2-digit): `FEATURE-001-PHASE01`, `FEATURE-001-PHASE02`, … The base item keeps its un-suffixed ID (`FEATURE-001`).
-- If the existing project already uses its own roadmap or ID scheme, follow that instead of this one.
-
-### `roadmap.md` — summary only
-
-The roadmap holds **only** a summary table — never plan details. Columns: **ID · Title · Status · Plan** (the path to the item's plan file).
-
-- **Status vocabulary:** `TODO`, `IN PROGRESS`, `DONE`, `ABANDONED`.
-- For a multi-phase item, list the item on one row, then one indented `- PHASENN` row per phase, each carrying its own status; the phase rows reference the item's plan file as `(in FEATURE-001.md)`.
-- **Keep it current — update the roadmap after every dev** so each item/phase status reflects reality, and add a new item's row *before* you start implementing (the row and plan file are the first change on the dev's branch — see Version Control).
-
-```markdown
-| ID          | Title               | Status      | Plan                     |
-|-------------|---------------------|-------------|--------------------------|
-| FEATURE-001 | User authentication | IN PROGRESS | docs/plan/FEATURE-001.md |
-| - PHASE01   | Login flow          | DONE        | (in FEATURE-001.md)      |
-| - PHASE02   | OAuth providers     | IN PROGRESS | (in FEATURE-001.md)      |
-| BUG-001     | Fix token refresh   | DONE        | docs/plan/BUG-001.md     |
-```
-
-### Plan files — `docs/plan/<ID>.md`
-
-One file per work item, named after its base ID (`docs/plan/FEATURE-001.md` — no phase suffix in the filename). It contains the full plan, proportional to the work: objective, scope, design, acceptance criteria, and — for multi-phase items — a dedicated section per phase with that phase's steps and status. The roadmap's **Plan** column always points to this file.
-
-### Abandoning or changing direction
-
-If you decide to drop a dev, or to do it a different way, **do not delete its row.** Set its status to `ABANDONED` and, in the status cell, record a short reason and — if applicable — the ID of the item that replaces it. Mirror the same note at the top of the item's plan file.
-
-```markdown
-| FEATURE-004 | Custom cache layer | ABANDONED — superseded by a simpler approach; replaced by FEATURE-009 | docs/plan/FEATURE-004.md |
-```
-
-## Definition of Done
-
-A dev is **done** only when all of the following hold:
-
-1. The full build succeeds with zero warnings.
-2. The entire test suite passes — including the new tests the plan's acceptance criteria call for.
-3. Every acceptance criterion in the plan file is met.
-4. The roadmap and plan file statuses are updated.
-
-Only after all four may you print the progress table (multi-phase items) and the suggested commit message. Never mark an item `DONE` — or present it to me as finished — with a failing build or failing tests; report the failure instead.
-
-## Version Control
-
-- **Never commit changes yourself** — leave all commits to me. Creating the branch (below) is the only git action you perform **that modifies repository state**; read-only commands (`git status`, `git log`, `git diff`, `git branch --list`) are always allowed — use them to verify state before branching.
-- **Before starting any dev, create its branch from the project's default branch** (`main` unless we agreed otherwise — confirm the base branch during the interview), named from the ID under a category folder — `feature/` for features, `bugfix/` for bugs — followed by the ID lowercased and hyphenated: `git switch -c feature/feature-001-<short-slug>` (and `git switch -c bugfix/bug-001-<short-slug>` for a bug). For a phase of a multi-phase item, include the phase: `git switch -c feature/feature-001-phase01-<short-slug>` (one branch per phase). First verify the working tree is clean (`git status --porcelain` prints nothing). If the tree is dirty, a branch with that name already exists, or the project has no git repository yet — stop and ask me before proceeding.
-- **Branch first, then plan:** the item's roadmap row and plan file are the first change made *on* the new branch — never left on the previous branch or the default branch.
-- **After each dev, write a suggested commit message to the console** (do **not** run it): a short title, a blank line, then a brief bulleted description. Use conventional-commit style with the ID scoped in; **the scope is always the base ID** — `feat(FEATURE-001): …` for features, `fix(BUG-001): …` for bugs — and for a phase, the phase goes in the title (`feat(FEATURE-001): add login flow (PHASE01)`), never in the scope.
-- **Multi-phase items: pause between phases.** After printing a phase's progress table and commit message, stop and wait for me to commit before creating the next phase's branch, so each phase's changes land on their own branch.
-
-### Multi-phase progress reporting
-
-When a phase of a multi-phase item completes, **before** the commit message, print to the console a **status table of all phases** of that item — each phase with its status, the immediate next phase marked `TODO (next)` — so it's clear what is done, what's next, and what remains. Then print the commit title and description **after** the table. (Single-phase devs skip the table and just get the commit message.) When the final phase completes, no row carries the `(next)` marker — all phases show `DONE` — and the item's own roadmap row flips to `DONE` in the same update.
-
-```
-FEATURE-001 — User authentication
-
-| Phase   | Title           | Status      |
-|---------|-----------------|-------------|
-| PHASE01 | Login flow      | DONE        |
-| PHASE02 | OAuth providers | TODO (next) |
-| PHASE03 | Two-factor auth | TODO        |
-
-Commit title:
-  feat(FEATURE-001): add login flow (PHASE01)
-
-Commit description:
-  - email/password login with validation
-  - session cookie issuance
-  - unit tests for the auth service
-```
-
-## Sub-Agent Delegation
-- For large efforts that decompose cleanly into independent units, delegate those units to sub-agents, each spawned with its own fresh context. This keeps every sub-agent focused on a single, well-scoped portion and improves the quality of each part.
-- Only delegate when the split is genuinely clean (minimal cross-dependencies and clear interfaces between parts). If the work is tightly coupled, keep it in a single context to preserve coherence rather than forcing an artificial split.
-- When you do delegate: (1) include in each sub-agent's prompt the interface contract it must honor, the relevant validated requirements from the interview, and the exact target paths; (2) sub-agents write code and tests only — all git actions, roadmap/plan updates, and commit messages remain yours; (3) after integrating sub-agent output, run the full build and test suite yourself before declaring the dev done.
+**Plan-mode note.** If the session is in plan mode, present the Phase 3 validated summary (and, once chosen, the delivery flow) as the plan and obtain approval (ExitPlanMode) before anything else — branch creation, file writes, and roadmap updates all wait for that approval. In other permission modes, expect the first `git switch -c` and file writes to raise permission prompts; treat them as harness mechanics, not as a reason to change approach.
 
 # Rules
 - **Never *silently* assume** — except where an applicable convention skill resolves the question: apply it and list it under "House conventions applied" in the Phase 3 summary. For every remaining open point, either ask, or — for low-impact details only — apply your recommended default and list it explicitly under "Assumptions & defaults I applied" in the Phase 3 summary. A "you decide" answer from me is an explicit decision, not an assumption.

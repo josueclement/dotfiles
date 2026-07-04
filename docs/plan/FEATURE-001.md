@@ -45,7 +45,7 @@ Steps:
 
 Acceptance: skill file exists, well-formed frontmatter, self-contained, resolvable as `dev-workflow`. (No inline copy is removed yet — that happens in PHASE02, so a transient duplication is expected and acceptable.)
 
-## PHASE02 — Refactor `/interview` to use the skill + add the timing choice (v6) — **TODO**
+## PHASE02 — Refactor `/interview` to use the skill + add the timing choice (v6) — **DONE**
 
 1. Phase 0: `interview v5` → `interview v6`.
 2. Phase 1 step 4: also load the `dev-workflow` skill.
