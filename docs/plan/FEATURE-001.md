@@ -54,7 +54,7 @@ Acceptance: skill file exists, well-formed frontmatter, self-contained, resolvab
 
 Acceptance: criteria 1 and 2 above met; existing plan-mode paragraph retained.
 
-## PHASE03 — Add `/build` command + wiring — **TODO**
+## PHASE03 — Add `/build` command + wiring — **DONE**
 
 1. New `.claude/commands/build.md` (frontmatter + body: announce version, load skill, resolve target, read plan, pre-flight, plan-mode-aware, branch, implement, DoD, progress table + commit message, pause between phases).
 2. Symlink `~/.claude/commands/build.md` → repo file.
