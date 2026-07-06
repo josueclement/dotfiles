@@ -76,7 +76,7 @@ File: `.claude/skills/dev-workflow/SKILL.md`. Branch: `feature/feature-002-phase
 7. New "Line endings (CRLF)" rule (decision 5).
 8. Definition of Done: add the completion-doc criterion.
 
-### PHASE02 — `/interview` v7 — **TODO**
+### PHASE02 — `/interview` v7 — **DONE**
 File: `.claude/commands/interview.md`. Branch: `feature/feature-002-phase02-interview-planning-only`.
 1. Version line → `Using interview v7 by Josué Clément`.
 2. Description / Role / Mission → planning-only (hand off to `/build`; drop self-implementation).
