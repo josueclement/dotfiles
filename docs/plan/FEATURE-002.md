@@ -1,6 +1,6 @@
 # FEATURE-002 — Interview-ecosystem improvements
 
-**Status:** IN PROGRESS
+**Status:** DONE
 
 ## Objective
 
@@ -84,7 +84,7 @@ File: `.claude/commands/interview.md`. Branch: `feature/feature-002-phase02-inte
 4. Phase 4 rewrite → remove the delivery-timing question; planning flow only; update the plan-mode note.
 5. Phase 3 work-item-breakdown wording → include the CODE-REVIEW case.
 
-### PHASE03 — `/build` v2 — **TODO**
+### PHASE03 — `/build` v2 — **DONE**
 File: `.claude/commands/build.md`. Branch: `feature/feature-002-phase03-build-command`.
 1. Version line → `Using build v2 by Josué Clément`.
 2. Phase 2 resolution → accept `CODE-REVIEW-NNN` / `CODE-REVIEW-NNN-PHASENN`; `review/` example.
