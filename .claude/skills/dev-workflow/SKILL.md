@@ -1,39 +1,43 @@
 ---
 name: dev-workflow
-description: Use when planning or implementing tracked work items under this house dev workflow — the roadmap registry (docs/roadmap.md), per-item plan files (docs/plan/<ID>.md), FEATURE-NNN/BUG-NNN work-item IDs, branch naming, the Definition of Done, multi-phase progress reporting, and sub-agent delegation. Loaded by the /interview and /build commands; apply it whenever allocating a work-item ID, writing a plan file, branching for a dev, or reporting a dev as done.
+description: Use when planning or implementing tracked work items under this house dev workflow — the roadmap registry (docs/roadmap.md), per-item plan files (docs/plan/<ID>.md), completion records (docs/done/<ID>.md), FEATURE-NNN/BUG-NNN/CODE-REVIEW-NNN work-item IDs, branch naming, the Definition of Done, multi-phase progress reporting, and sub-agent delegation. Loaded by the /interview and /build commands; apply it whenever allocating a work-item ID, writing a plan file, branching for a dev, or reporting a dev as done.
 ---
 
 # Dev workflow — house planning, tracking & version-control standards
 
-These standards govern *how* tracked development work is planned, recorded, and delivered. They are shared by `/interview` (which plans work, and optionally executes it) and `/build` (which executes a previously planned item). If the existing codebase already enforces its own conventions (documentation layout, branch naming, an existing roadmap or work-item ID scheme, etc.), those take precedence over the defaults here — confirm any such conventions before allocating IDs or creating branches.
+**Version: dev-workflow v1.**
 
-**A "dev" is one deliverable unit of work — a single-phase item, or one phase of a multi-phase item.** Each dev gets its own branch, its own roadmap status update, and its own suggested commit message.
+These standards govern *how* tracked development work is planned, recorded, and delivered. They are shared by `/interview` (which **only plans** work — it never builds) and `/build` (which executes a previously planned item). If the existing codebase already enforces its own conventions (documentation layout, branch naming, an existing roadmap or work-item ID scheme, etc.), those take precedence over the defaults here — confirm any such conventions before allocating IDs or creating branches.
+
+**A "dev" is one deliverable unit of work — a single-phase item, or one phase of a multi-phase item.** Each dev gets its own branch, its own roadmap status update, its own completion record, and its own suggested commit message.
 
 ## Two flows: planning vs building
 
 This workflow separates *planning* from *building*, so plans can be produced now and implemented later.
 
-- **Planning flow** — produce the artifacts without implementing. Write the roadmap row(s) and plan file(s) with status `TODO` on the project's **base branch** (its default branch); create **no** dev branch. The plan file is the durable contract a later build consumes. `/interview` runs this flow when the user chooses to stop after plans.
-- **Build flow** — implement a dev. Create its branch from the base branch **first** (see Version Control), then implement. Any planning artifacts not already committed (roadmap row, plan file) are the first change on that branch — a freshly created row/plan is written directly at status `IN PROGRESS` (not `TODO`); if the plan file already exists on the base branch (planned earlier), the first change on the branch is instead flipping that item/phase status to `IN PROGRESS`. `/interview` runs this flow when the user chooses to execute now; `/build` always runs it against an already-planned item.
+- **Planning flow** — produce the artifacts without implementing. Write the roadmap row(s) and plan file(s) with status `TODO` on your **current branch or `HEAD`** (see Version Control); create **no** dev branch. The plan file is the durable contract a later build consumes. `/interview` **always** runs this flow; it never implements.
+- **Build flow** — implement a dev. Create its branch from your **current `HEAD`** **first** (see Version Control), then implement. Any planning artifacts not already committed (roadmap row, plan file) are the first change on that branch — a freshly created row/plan is written directly at status `IN PROGRESS` (not `TODO`); if the plan file already exists (planned earlier), the first change on the branch is instead flipping that item/phase status to `IN PROGRESS`. `/build` always runs this flow against an already-planned item; `/interview` never runs it.
 
 ## Planning & Documentation
 
-Track every dev through a stable work-item ID, a persistent roadmap, and one plan file per item.
+Track every dev through a stable work-item ID, a persistent roadmap, one plan file per item, and one completion record per completed dev.
 
 ### Documentation structure (at the solution root)
 
 - `docs/roadmap.md` — the single, persistent registry of **every** work item across the whole project (not just the current task).
 - `docs/plan/` — one markdown plan file per work item, holding the full plan details.
-- **If this structure does not exist yet** — new project, or the first tracked work item in an existing codebase — create `docs/roadmap.md` (an empty table with the four columns below) and `docs/plan/` before allocating the first ID, after confirming the project doesn't already track work items elsewhere.
+- `docs/done/` — one "what has been done" completion record per **completed dev** (see *Completion docs*).
+- **If this structure does not exist yet** — new project, or the first tracked work item in an existing codebase — create `docs/roadmap.md` (an empty table with the four columns below), `docs/plan/`, and `docs/done/` before allocating the first ID, after confirming the project doesn't already track work items elsewhere.
 
 ### Work-item identifiers
 
 Every unit of work gets a stable ID before anything else happens:
 
-- **Format:** `FEATURE-NNN` or `BUG-NNN`, where `NNN` is a 3-digit, zero-padded number (`001`, `002`, …).
-- **Numbering is per type:** features and bugs each have their own counter (`FEATURE-001`, `FEATURE-002`, `BUG-001`, …). Allocate by taking the highest `NNN` of that type in the roadmap's **ID column** and adding 1 — ignore phase rows and IDs mentioned in status or notes text, and never reuse a number (including `ABANDONED` ones). Also glance at `docs/plan/` for stray plan files whose ID isn't in the roadmap.
-- **Only `FEATURE` and `BUG`** types are used.
+- **Format:** `FEATURE-NNN`, `BUG-NNN`, or `CODE-REVIEW-NNN`, where `NNN` is a 3-digit, zero-padded number (`001`, `002`, …).
+- **Numbering is per type:** features, bugs, and code reviews each have their own counter (`FEATURE-001`, `FEATURE-002`, `BUG-001`, `CODE-REVIEW-001`, …). Allocate by taking the highest `NNN` of that type in the roadmap's **ID column** and adding 1 — ignore phase rows and IDs mentioned in status or notes text, and never reuse a number (including `ABANDONED` ones). Also glance at `docs/plan/` for stray plan files whose ID isn't in the roadmap.
+- **`FEATURE`, `BUG`, and `CODE-REVIEW`** types are used.
 - **Multi-phase items:** when an item is large enough to need several phases, suffix the phase as `-PHASENN` (2-digit): `FEATURE-001-PHASE01`, `FEATURE-001-PHASE02`, … The base item keeps its un-suffixed ID (`FEATURE-001`).
+- **Code-review items:** a `CODE-REVIEW-NNN` item captures a code review (e.g. the output of `/code-review`, `/security-review`, or a PR review). **Each finding becomes one PHASE**, and the phases are **ordered highest-severity first** (Critical → High → Medium → Low). Record the severity in the phase title and in the plan file — e.g. `PHASE01 — [Critical] SQL injection in OrderRepository`. Built like any other multi-phase item via `/build`, on `review/` branches (see Version Control). The plan file `docs/plan/CODE-REVIEW-NNN.md` records, per finding, its severity, location (file:line), and the recommended fix.
 - If the existing project already uses its own roadmap or ID scheme, follow that instead of this one.
 
 ### `roadmap.md` — summary only
@@ -42,7 +46,7 @@ The roadmap holds **only** a summary table — never plan details. Columns: **ID
 
 - **Status vocabulary:** `TODO`, `IN PROGRESS`, `DONE`, `ABANDONED`.
 - For a multi-phase item, list the item on one row, then one indented `- PHASENN` row per phase, each carrying its own status; the phase rows reference the item's plan file as `(in FEATURE-001.md)`.
-- **Keep it current — update the roadmap after every dev** so each item/phase status reflects reality. Add a new item's row when it is created: in the **planning flow** on the base branch; in the **build flow** as the first change on the dev's branch (see Version Control).
+- **Keep it current — update the roadmap after every dev** so each item/phase status reflects reality. Add a new item's row when it is created: in the **planning flow** on your current branch/`HEAD`; in the **build flow** as the first change on the dev's branch (see Version Control).
 
 ```markdown
 | ID          | Title               | Status      | Plan                     |
@@ -53,9 +57,30 @@ The roadmap holds **only** a summary table — never plan details. Columns: **ID
 | BUG-001     | Fix token refresh   | DONE        | docs/plan/BUG-001.md     |
 ```
 
+A code-review item follows the same shape, with findings as phases:
+
+```markdown
+| ID              | Title                    | Status      | Plan                         |
+|-----------------|--------------------------|-------------|------------------------------|
+| CODE-REVIEW-001 | PR #42 review            | IN PROGRESS | docs/plan/CODE-REVIEW-001.md |
+| - PHASE01       | [Critical] SQLi in Order | DONE        | (in CODE-REVIEW-001.md)      |
+| - PHASE02       | [Medium] N+1 in Listing  | TODO        | (in CODE-REVIEW-001.md)      |
+```
+
 ### Plan files — `docs/plan/<ID>.md`
 
 One file per work item, named after its base ID (`docs/plan/FEATURE-001.md` — no phase suffix in the filename). It contains the full plan, proportional to the work: objective, scope, design, acceptance criteria, and — for multi-phase items — a dedicated section per phase with that phase's steps and status. The roadmap's **Plan** column always points to this file.
+
+### Completion docs — `docs/done/<ID>.md`
+
+When a dev reaches the Definition of Done, write a **"what has been done" completion record** — **one file per dev**, named after the dev's full ID *including* any phase suffix: `docs/done/FEATURE-001-PHASE02.md` for a phase, `docs/done/BUG-003.md` for a single-phase item, `docs/done/CODE-REVIEW-001-PHASE01.md` for a review finding. It records, concisely:
+
+- **Summary** — what changed and why.
+- **Files/modules touched** — created / modified / deleted.
+- **Deviations & follow-ups** — where the implementation differed from the plan and why, plus known issues, follow-up suggestions, and any line-ending (CRLF) recommendation (see *Line endings*).
+- **Build/test evidence** — the Definition-of-Done proof: build clean, test suite passing, tests added (or, for no-build/no-test work, how the criteria were verified).
+
+The completion doc is part of the **dev's own commit** (it lands with the code, not as a separate commit). Writing it is Definition-of-Done criterion 5.
 
 ### Abandoning or changing direction
 
@@ -73,18 +98,23 @@ A dev is **done** only when all of the following hold:
 2. The entire test suite passes — including the new tests the plan's acceptance criteria call for.
 3. Every acceptance criterion in the plan file is met.
 4. The roadmap and plan file statuses are updated.
+5. The dev's completion doc `docs/done/<ID>.md` is written (see *Completion docs*).
 
-Only after all four may you print the progress table (multi-phase items) and the suggested commit message. Never mark an item `DONE` — or present it as finished — with a failing build or failing tests; report the failure instead.
+Only after all five may you print the progress table (multi-phase items) and the suggested commit message. Never mark an item `DONE` — or present it as finished — with a failing build or failing tests; report the failure instead.
 
-(For work with no build step or test suite — e.g. documentation or prompt/config changes — criteria 1 and 2 are satisfied by the applicable equivalent: the artifact is well-formed and its acceptance criteria are verified by inspection or a dry run. State explicitly that there was nothing to build or test.)
+(For work with no build step or test suite — e.g. documentation or prompt/config changes — criteria 1 and 2 are satisfied by the applicable equivalent: the artifact is well-formed and its acceptance criteria are verified by inspection or a dry run. State explicitly that there was nothing to build or test. Criteria 3–5 still apply.)
+
+## Line endings (CRLF)
+
+Never fix CRLF / line-ending noise as part of a dev, and never raise it as an interview question. If you notice line-ending inconsistency (e.g. a diff dominated by CRLF↔LF churn, or mixed endings in a touched file), emit a **one-line recommendation only** — in the dev's completion doc under *Deviations & follow-ups*, and/or to the console — and take no action on it. The user owns whether and how to normalize line endings (e.g. via a `.gitattributes` `* text=auto eol=lf` rule).
 
 ## Version Control
 
-- **Never commit changes yourself** — leave all commits to the user. Creating the branch (below) is the only git action you perform **that modifies repository state**; read-only commands (`git status`, `git log`, `git diff`, `git branch --list`) are always allowed — use them to verify state before branching.
-- **Before starting any dev (build flow), create its branch from the project's default branch** (confirm the base branch first — do not assume `main`; some repos use `master` or another branch), named from the ID under a category folder — `feature/` for features, `bugfix/` for bugs — followed by the ID lowercased and hyphenated: `git switch -c feature/feature-001-<short-slug>` (and `git switch -c bugfix/bug-001-<short-slug>` for a bug). For a phase of a multi-phase item, include the phase: `git switch -c feature/feature-001-phase01-<short-slug>` (one branch per phase). First verify the working tree is clean (`git status --porcelain` prints nothing). If the tree is dirty, a branch with that name already exists, or the project has no git repository yet — stop and ask the user before proceeding.
-- **In the planning flow, do not create a dev branch:** the roadmap row(s) and plan file(s) are written on the base branch. Branching is deferred to whoever builds the item later.
-- **Branch first, then plan (build flow only):** on the new branch, the first change is the item's roadmap row + plan file (created directly at status `IN PROGRESS`) if they don't yet exist, or — if they were written earlier by the planning flow — flipping the item/phase status to `IN PROGRESS`. Never leave a build's first change on the previous branch or the default branch.
-- **After each dev, write a suggested commit message to the console** (do **not** run it): a short title, a blank line, then a brief bulleted description. Use conventional-commit style with the ID scoped in; **the scope is always the base ID** — `feat(FEATURE-001): …` for features, `fix(BUG-001): …` for bugs — and for a phase, the phase goes in the title (`feat(FEATURE-001): add login flow (PHASE01)`), never in the scope.
+- **Never commit changes yourself** — leave all commits to the user. Creating the branch (below) is the only git action you perform **that modifies repository state**; read-only commands (`git status`, `git log`, `git diff`, `git branch --list`, `git rev-parse`) are always allowed — use them to verify state before branching.
+- **Before starting any dev (build flow), create its branch from your current `HEAD`** — the branch or commit `HEAD` currently points at — **never** switching to the project's default branch. A **detached `HEAD` is fine** (the user manages their own git state); branch directly from the detached commit. Do not assume or switch to `main`/`master`. Name the branch from the ID under a category folder — `feature/` for features, `bugfix/` for bugs, `review/` for code reviews — followed by the ID lowercased and hyphenated: `git switch -c feature/feature-001-<short-slug>` (`bugfix/bug-001-<short-slug>` for a bug, `review/code-review-001-<short-slug>` for a review). For a phase of a multi-phase item, include the phase: `git switch -c feature/feature-001-phase01-<short-slug>` (one branch per phase). First verify the working tree is clean (`git status --porcelain` prints nothing). **If the tree is dirty, a branch with that name already exists, or the project has no git repository yet — stop and ask the user before proceeding.**
+- **In the planning flow, do not create a dev branch:** the roadmap row(s) and plan file(s) are written on your current branch/`HEAD`. Branching is deferred to whoever builds the item later.
+- **Branch first, then plan (build flow only):** on the new branch, the first change is the item's roadmap row + plan file (created directly at status `IN PROGRESS`) if they don't yet exist, or — if they were written earlier by the planning flow — flipping the item/phase status to `IN PROGRESS`. Never leave a build's first change on your previous branch/`HEAD`.
+- **After each dev, write a suggested commit message to the console** (do **not** run it): a short title, a blank line, then a brief bulleted description. Use conventional-commit style with the ID scoped in; **the scope is always the base ID** — `feat(FEATURE-001): …` for features, `fix(BUG-001): …` for bugs, `fix(CODE-REVIEW-001): …` for code-review findings — and for a phase, the phase goes in the title (`feat(FEATURE-001): add login flow (PHASE01)`), never in the scope.
 - **Planning-flow commits.** When the planning flow writes one or more items' roadmap rows and plan files without implementing, the suggested commit is a single documentation commit for the batch — scoped `docs` (or `chore`), e.g. `docs(roadmap): plan FEATURE-005, FEATURE-006, BUG-003` — not a per-item `feat(...)`/`fix(...)` scope (those belong to the build flow that implements a dev).
 - **Between devs, pause.** After printing a dev's progress table (multi-phase) and its commit message, stop and wait for the user to commit before creating the next dev's branch — whether the next dev is the following **phase** of a multi-phase item or a separate **work item** built in the same run. Each dev needs its own branch cut from a clean working tree (`git status --porcelain` empty), so the current dev must be committed first; each dev's changes land on their own branch.
 
@@ -113,4 +143,4 @@ Commit description:
 ## Sub-Agent Delegation
 - For large efforts that decompose cleanly into independent units, delegate those units to sub-agents, each spawned with its own fresh context. This keeps every sub-agent focused on a single, well-scoped portion and improves the quality of each part.
 - Only delegate when the split is genuinely clean (minimal cross-dependencies and clear interfaces between parts). If the work is tightly coupled, keep it in a single context to preserve coherence rather than forcing an artificial split.
-- When you do delegate: (1) include in each sub-agent's prompt the interface contract it must honor, the relevant validated requirements from the plan, and the exact target paths; (2) sub-agents write code and tests only — all git actions, roadmap/plan updates, and commit messages remain yours; (3) after integrating sub-agent output, run the full build and test suite yourself before declaring the dev done.
+- When you do delegate: (1) include in each sub-agent's prompt the interface contract it must honor, the relevant validated requirements from the plan, and the exact target paths; (2) sub-agents write code and tests only — all git actions, roadmap/plan/done updates, and commit messages remain yours; (3) after integrating sub-agent output, run the full build and test suite yourself before declaring the dev done.
