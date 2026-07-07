@@ -12,3 +12,4 @@ The single, persistent registry of every work item in this project. Summary only
 | - PHASE01   | `dev-workflow` skill overhaul (v1) | DONE        | (in FEATURE-002.md)      |
 | - PHASE02   | `/interview` planning-only (v7)    | DONE        | (in FEATURE-002.md)      |
 | - PHASE03   | `/build` current-HEAD, reviews(v2) | DONE        | (in FEATURE-002.md)      |
+| FEATURE-003 | `git-repo-hygiene` skill           | IN PROGRESS | docs/plan/FEATURE-003.md |
