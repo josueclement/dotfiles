@@ -5,7 +5,7 @@ description: Use when planning or implementing tracked work items under this hou
 
 # Dev workflow — house planning, tracking & version-control standards
 
-**Version: dev-workflow v1.**
+**Version: dev-workflow v2.**
 
 These standards govern *how* tracked development work is planned, recorded, and delivered. They are shared by `/interview` (which **only plans** work — it never builds) and `/build` (which executes a previously planned item). If the existing codebase already enforces its own conventions (documentation layout, branch naming, an existing roadmap or work-item ID scheme, etc.), those take precedence over the defaults here — confirm any such conventions before allocating IDs or creating branches.
 
@@ -103,6 +103,15 @@ A dev is **done** only when all of the following hold:
 Only after all five may you print the progress table (multi-phase items) and the suggested commit message. Never mark an item `DONE` — or present it as finished — with a failing build or failing tests; report the failure instead.
 
 (For work with no build step or test suite — e.g. documentation or prompt/config changes — criteria 1 and 2 are satisfied by the applicable equivalent: the artifact is well-formed and its acceptance criteria are verified by inspection or a dry run. State explicitly that there was nothing to build or test. Criteria 3–5 still apply.)
+
+## Documentation freshness sweep (build flow)
+
+**Build flow only** — the planning flow never runs this. Once a dev has met the Definition of Done (roadmap + plan statuses updated, `docs/done/<ID>.md` written) and **before** you print the progress table and the suggested commit message, run a documentation freshness sweep so user-facing docs don't silently fall out of date.
+
+- **Scan the dev's changes** and identify project/user-facing documentation the change may have made stale, across: **README** files; **CLAUDE.md** / agent-instruction files (`AGENTS.md`, etc.); and **other prose docs** (e.g. `CHANGELOG.md`, `CONTRIBUTING.md`, a docs site, other human-facing files under `docs/`). **Exclude the workflow's own tracked artifacts** — `docs/roadmap.md`, `docs/plan/`, `docs/done/` are already handled by the Definition of Done — and do not treat skill/command prompt files as sweep targets.
+- **Always ask, with concrete candidates.** Surface one `AskUserQuestion` every time (even when nothing looks stale). Offer the specific files/sections you recommend updating — one option each, with a one-line reason (e.g. "README 'Usage' still shows the old flag") — plus a **"none / skip"** option. If the sweep found nothing, say so and recommend skip. Never edit docs without asking.
+- **Accepted edits land in this dev's own commit.** If the user selects targets, make those edits now; they ride in the same commit as the code and the completion doc, and you extend the suggested commit message to mention them. If the user skips, proceed unchanged.
+- **Non-blocking.** This is a safety-net prompt, not a sixth Definition-of-Done criterion — never hold a dev's `DONE` status on it.
 
 ## Line endings (CRLF)
 
