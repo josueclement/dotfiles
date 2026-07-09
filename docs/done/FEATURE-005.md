@@ -13,6 +13,7 @@ Replaced the `AskUserQuestion` picker in the no-argument path of `/build` with a
 - `.claude/commands/build.md`
   - Phase 2, "If I passed nothing" bullet: swapped the `AskUserQuestion` picker for a full-table print with recommended-build marker, per-phase `← next` annotation, an explicit "ask me to reply with the ID" step, and a preserved empty-state branch. (Edit 1)
   - Plan-mode note: replaced the "Phase 2 target-resolution picker (its `AskUserQuestion` is allowed…)" reference with "printing the Phase 2 roadmap table and asking me for the ID (all read-only, allowed before `ExitPlanMode`)". (Edit 2)
+  - Phase 0 version bump: `Using build v3 by Josué Clément` → `Using build v4 by Josué Clément`, reflecting the behavior change (follows FEATURE-004's precedent of bumping the version when `/build` changes). (Added post-plan at user request.)
 - `docs/roadmap.md` — FEATURE-005 status `TODO` → `DONE`.
 - `docs/plan/FEATURE-005.md` — status `TODO` → `DONE`.
 
@@ -21,7 +22,7 @@ Replaced the `AskUserQuestion` picker in the no-argument path of `/build` with a
 
 ## Deviations & follow-ups
 
-- **No deviations from the plan.** Both edits landed exactly as scoped; the `$ARGUMENTS`-passed path, ID resolution, buildable-status gate, and Phases 3–4 were left untouched (AC7).
+- **One addition beyond the plan (at user request):** bumped the Phase 0 version line `v3` → `v4` to reflect the changed `/build` behavior. The plan's two scoped edits landed exactly as written; the `$ARGUMENTS`-passed path, ID resolution, buildable-status gate, and Phases 3–4 were otherwise left untouched (AC7).
 - **CRLF / line-ending recommendation (no action taken, per the `dev-workflow` skill):** the working tree carries repo-wide line-ending noise — ~46 files show pure exec-bit mode flips (`100644`→`100755`, from `core.fileMode=true` on the `/mnt/c` WSL mount) and 5 files show CRLF↔LF churn (`build.md`, `dev-workflow/SKILL.md`, `docs/done/FEATURE-004.md`, `docs/plan/FEATURE-004.md`, `docs/roadmap.md`). `build.md` is CRLF in the working tree; my edits preserved its CRLF convention (all 56 lines CRLF, no mixed endings). Recommend the user normalize line endings (the repo's own `git-repo-hygiene` skill / a `.gitattributes` `* text=auto eol=lf` rule + `git add --renormalize`) and consider `git config core.fileMode false`. **This build took no action on either.**
 - **Build ran on a dirty tree by explicit user authorization** (the clean-tree precondition was waived for this run). The suggested commit should stage only the FEATURE-005 files, leaving the pre-existing mode/CRLF noise for the user to handle separately.
 - **Out-of-scope observation (not addressed):** FEATURE-003 (`git-repo-hygiene` skill) is marked `IN PROGRESS` in the roadmap but was already committed (`3a7863e`) and merged (`85b4044`); it is missing its `docs/done/FEATURE-003.md` completion doc and a `DONE` status flip. Flagged for a future closeout — not part of this dev.

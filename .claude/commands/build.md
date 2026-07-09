@@ -15,7 +15,7 @@ This project plans work up front with `/interview` (which **only plans — it ne
 ## Phase 0: Announce the version
 **Before anything else**, your very first output must be exactly this line, as plain text, on its own line and with nothing before it:
 
-Using build v3 by Josué Clément
+Using build v4 by Josué Clément
 
 Then proceed.
 
