@@ -14,4 +14,4 @@ The single, persistent registry of every work item in this project. Summary only
 | - PHASE03   | `/build` current-HEAD, reviews(v2) | DONE        | (in FEATURE-002.md)      |
 | FEATURE-003 | `git-repo-hygiene` skill           | IN PROGRESS | docs/plan/FEATURE-003.md |
 | FEATURE-004 | `/build` doc-freshness sweep       | DONE        | docs/plan/FEATURE-004.md |
-| FEATURE-005 | `/build` prints roadmap when no ID | TODO        | docs/plan/FEATURE-005.md |
+| FEATURE-005 | `/build` prints roadmap when no ID | DONE        | docs/plan/FEATURE-005.md |

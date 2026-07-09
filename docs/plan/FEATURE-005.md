@@ -1,6 +1,6 @@
 # FEATURE-005 — `/build` prints the roadmap when invoked with no ID
 
-**Status:** TODO
+**Status:** DONE
 **Type:** FEATURE (single-phase)
 **Branch (at build time):** `feature/feature-005-build-roadmap-listing` (cut from current `HEAD`)
 
