@@ -18,6 +18,7 @@ app (`CarbonAvaloniaDesktopTester`).
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationIcon>Assets/app.ico</ApplicationIcon>   <!-- app/window icon: see the avalonia skill's "Application icon" section -->
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Carbon.Avalonia.Desktop" Version="0.2.0" />
@@ -25,6 +26,9 @@ app (`CarbonAvaloniaDesktopTester`).
     <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.2" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Assets/**" />
   </ItemGroup>
 </Project>
 ```
@@ -167,6 +171,7 @@ content. The `x:Name`s must match what `App.axaml.cs` passes to `RegisterHost`.
         xmlns:nav="using:Carbon.Avalonia.Desktop.Controls.Navigation"
         x:Class="MyApp.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/app.ico"
         Background="{DynamicResource CarbonBackgroundBrush}">
   <Panel>
     <DockPanel>
