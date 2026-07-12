@@ -22,6 +22,21 @@ The skill makes **in-repo edits only**. It **prints — never runs —** the out
 
 Given the version `X.Y.Z` being released:
 
+- **Target frameworks** — check the **packable library**'s `<TargetFramework>` / `<TargetFrameworks>` and normalize its modern-.NET set to the current LTS pair. **This is the one in-repo edit the skill proposes and confirms before writing:** show the `old → new` TFM set and wait for the user's OK, because a TFM change moves the library's compatibility surface. Apps/CLIs are left alone (they ship a single TFM).
+  - **Preserve** every `netstandard*` target (max consumer compatibility) and every **platform-specific** TFM (one with a `-` suffix — `net8.0-windows`, `net10.0-android`, …); rewriting those would strip the platform surface. If a platform-specific TFM is older than `net8`, **warn** (print a note) for manual review — don't change it.
+  - **Normalize the plain-`net` targets to exactly `net8.0;net10.0`** — the two currently-supported LTS releases (net8 LTS through Nov 2026, net10 LTS from Nov 2025), so the modern-.NET set is `net8.0` + `net10.0` **for now**. Add whichever is missing, replace any `net` older than 8 (`net6.0`, `netcoreapp*`), and collapse any other `net` (e.g. `net9.0`) down to the pair. This fires **only when a plain-`net` target already exists** — a `netstandard`-only library is left untouched (never force `net` onto it):
+
+    | before | after |
+    |---|---|
+    | `net8.0` | `net8.0;net10.0` |
+    | `netstandard2.0;net8.0` | `netstandard2.0;net8.0;net10.0` |
+    | `net6.0` | `net8.0;net10.0` |
+    | `net9.0` | `net8.0;net10.0` |
+    | `net10.0` | `net8.0;net10.0` |
+    | `netstandard2.0` | `netstandard2.0` (unchanged) |
+
+  - When the result carries more than one TFM, use the plural **`<TargetFrameworks>`** element (`;`-separated — `netstandard*` first, then ascending `net`, then any preserved platform TFM), converting from a singular `<TargetFramework>` if needed.
+  - **Log the change:** record the `old → new` TFM set in the release's `RELEASENOTES.md` *Compatibility* sub-section and update the README **"supported target frameworks"** line (below). A **dropped** TFM (replacing a `net` older than 8) is a compatibility break — say so in the notes.
 - **`<Version>`** in the packable library `.csproj` → `X.Y.Z`. (A CLI/app in the same solution keeps its own independent `<Version>`.)
 - **`<PackageReleaseNotes>`** in that csproj — a short prose summary mirroring the top of `RELEASENOTES.md`, ending with `See RELEASENOTES.md for the full details.` (or the migration guide, for a breaking release).
 - **`RELEASENOTES.md`** — prepend the new section (newest-first). If the top section is headed `(unreleased)`, rename it to `<Name> vX.Y.Z Release Notes`; otherwise add a new `# <Name> vX.Y.Z Release Notes` block above the previous one. Match the repo's existing sub-section style (e.g. *New Features · Breaking Changes & Migration · Compatibility · Version*).
@@ -39,7 +54,7 @@ Given the version `X.Y.Z` being released:
     ```
   - Update any **"supported target frameworks"** line if the TFM set changed this release.
 
-So the actual per-release version edits are just `<Version>` in the csproj and the what's-new callout. The NuGet badge tracks the published version on its own — leave it alone — and the supported-TFMs line changes only if the TFM set moved this release.
+So the actual per-release version edits are usually just `<Version>` in the csproj and the what's-new callout — plus the target-framework normalization on the releases that move the TFM set. The NuGet badge tracks the published version on its own — leave it alone — and the supported-TFMs line changes only if the TFM set moved this release.
 
 ## NuGet package refresh
 
@@ -106,6 +121,7 @@ For a **non-packable app** (no `PackageId`, not published to NuGet), skip the pa
 
 - **dev-workflow** — the release is the final phase of a `FEATURE-NNN` item; it owns branch naming, the never-commit-myself rule, tag/publish ownership, the `docs/roadmap.md` + `docs/plan/` + `docs/done/` records, and the doc-freshness sweep.
 - **dotnet-solution-config** — the CPM `Directory.Packages.props` file this skill edits when refreshing dependency versions, and the coupled-ecosystem rule.
+- **dotnet-solution-setup** — the authority for choosing a project's target frameworks at creation time; this skill's release-time normalization keeps a multi-targeted library on the current `net8.0` + `net10.0` LTS pair.
 - **git-repo-hygiene** — `.gitignore` / `.gitattributes` / line-ending normalization.
 
 ## Bundled files
@@ -123,6 +139,7 @@ For a **non-packable app** (no `PackageId`, not published to NuGet), skip the pa
 | `GeneratePackageOnBuild` left on for a publishable library | Turn it off; pack explicitly in the release step. |
 | Skipping the Release-config build/test pre-flight | Always `dotnet build`/`dotnet test -c Release` before tagging. |
 | Not logging `old → new` dependency transitions | Record every version change (and held-back set) in `RELEASENOTES.md`. |
+| TFM set changed but the README "supported target frameworks" line / `RELEASENOTES.md` *Compatibility* note not updated | Log the `old → new` TFM set and keep the audit trail in sync; flag a dropped TFM as a breaking change. |
 | Committing or echoing the NuGet API key | The key is a secret — it never appears in the repo or output. |
 
 If the target repo already has its own release conventions (tag prefix, notes layout, badge set), stay consistent with them and flag the divergence rather than silently imposing these defaults.

@@ -21,7 +21,7 @@ description: Use when creating a new .NET solution or project, adding a project 
 | Application (console, worker, Avalonia, WPF) | `net10.0` (WPF: `net10.0-windows`) |
 | Tests | `net10.0`, under `tests/` |
 
-Libraries deviate only when their purpose requires it (`Span<T>`-heavy APIs, source generators, framework-specific surface) — then `net10.0` or multi-target `netstandard2.0;net10.0`, with the reason documented in a `.csproj` comment. A `netstandard2.0` library using C# 14: compiler-only features (`field` keyword, extension blocks) work as-is; add PolySharp to polyfill compiler-known types before using `init`/`required` members or nullable-analysis attributes like `[NotNullWhen]`.
+Libraries deviate only when their purpose requires it (`Span<T>`-heavy APIs, source generators, framework-specific surface) — then `net10.0` or multi-target `netstandard2.0;net8.0;net10.0`, with the reason documented in a `.csproj` comment. `net8.0` and `net10.0` are the two currently-supported LTS releases — the modern-.NET set *for now*; a library that multi-targets modern .NET covers both, and **dotnet-release** normalizes to that pair at release time (an app or test project ships a single runtime, so it targets the latest LTS, `net10.0`, alone). A `netstandard2.0` library using C# 14: compiler-only features (`field` keyword, extension blocks) work as-is; add PolySharp to polyfill compiler-known types before using `init`/`required` members or nullable-analysis attributes like `[NotNullWhen]`.
 
 ## csproj defaults (every project)
 

@@ -1,6 +1,6 @@
 # FEATURE-009 — dotnet-release TFM normalization
 
-**Status:** TODO
+**Status:** DONE
 
 _Single-phase item. Planned via `/interview` (v7); build with `/build FEATURE-009`. Documentation/prompt change — no build/test step._
 

@@ -26,6 +26,7 @@ Run from the repository root, on the branch that will be merged:
       heading renamed to `X.Y.Z`).
 - [ ] `<PackageReleaseNotes>` in the library csproj summarizes the release and points to `RELEASENOTES.md`.
 - [ ] README badges and the "what's new" callout reflect `X.Y.Z`.
+- [ ] `<TargetFrameworks>` reflect the `net8.0` + `net10.0` policy (`netstandard*` preserved); any change was proposed/confirmed and logged in `RELEASENOTES.md` *Compatibility*.
 - [ ] Clean, warning-free build across all TFMs:
       ```bash
       dotnet build {{SOLUTION}} -c Release
