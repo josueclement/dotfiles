@@ -13,7 +13,7 @@ Give a .NET repo consistent, cross-platform text: LF-normalized files, correct b
 - Adding the missing one(s) to an existing .NET repo.
 - Fixing line-ending churn — diffs dominated by CRLF↔LF changes, a "whole file changed" with no real edits, or mixed endings inside a file.
 
-**Not for:** non-.NET repos (the bundled `.gitignore` is the Visual Studio template), or imposing code-style formatting rules (the `.editorconfig` here covers only line endings and charset).
+**Not for:** non-.NET repos (the bundled `.gitignore` is the Visual Studio template), or imposing code-style formatting rules (the `.editorconfig` here covers only line endings and charset). For a .NET **solution** that wants a full C# code-style file (naming, analyzer severities), use dotnet-solution-config's `.editorconfig` instead of the minimal one here — it is a strict superset of these line-ending/charset rules.
 
 ## The three files
 

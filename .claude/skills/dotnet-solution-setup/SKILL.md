@@ -25,6 +25,8 @@ Libraries deviate only when their purpose requires it (`Span<T>`-heavy APIs, sou
 
 ## csproj defaults (every project)
 
+**These defaults belong in one `Directory.Build.props` at the solution root**, not copy-pasted into every `.csproj` — see dotnet-solution-config, which owns that file (`LangVersion`, `Nullable`, `TreatWarningsAsErrors`, `EnforceCodeStyleInBuild`, author metadata). Shown here as the effective per-project result:
+
 ```xml
 <PropertyGroup>
   <LangVersion>14</LangVersion>

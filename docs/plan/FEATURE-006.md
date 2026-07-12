@@ -1,6 +1,6 @@
 # FEATURE-006 — `dotnet-solution-config` skill
 
-**Status:** TODO
+**Status:** DONE
 
 _Single-phase item. Planned via `/interview` (v7); build with `/build FEATURE-006`. Build this **before** FEATURE-007, which cross-references it._
 
