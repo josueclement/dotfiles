@@ -15,3 +15,5 @@ The single, persistent registry of every work item in this project. Summary only
 | FEATURE-003 | `git-repo-hygiene` skill           | IN PROGRESS | docs/plan/FEATURE-003.md |
 | FEATURE-004 | `/build` doc-freshness sweep       | DONE        | docs/plan/FEATURE-004.md |
 | FEATURE-005 | `/build` prints roadmap when no ID | DONE        | docs/plan/FEATURE-005.md |
+| FEATURE-006 | `dotnet-solution-config` skill     | TODO        | docs/plan/FEATURE-006.md |
+| FEATURE-007 | `dotnet-release` skill             | TODO        | docs/plan/FEATURE-007.md |
