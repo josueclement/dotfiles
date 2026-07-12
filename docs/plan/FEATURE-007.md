@@ -1,6 +1,6 @@
 # FEATURE-007 — `dotnet-release` skill
 
-**Status:** TODO
+**Status:** DONE
 
 _Single-phase item. Planned via `/interview` (v7); build with `/build FEATURE-007`. Build **after** FEATURE-006, which this skill cross-references._
 

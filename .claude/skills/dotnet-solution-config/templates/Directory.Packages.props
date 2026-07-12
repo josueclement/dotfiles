@@ -1,0 +1,52 @@
+<Project>
+
+  <!-- Central Package Management: every PackageReference version in the solution is pinned
+       here so shared dependencies (e.g. Avalonia) cannot drift between projects. Projects
+       reference packages WITHOUT a Version attribute (<PackageReference Include="Foo" />);
+       the version comes from the matching <PackageVersion> below.
+
+       Uncomment and fill the groups the solution actually needs. -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <!-- Core library -->
+  <!--
+  <ItemGroup>
+    <PackageVersion Include="Example.Core" Version="1.0.0" />
+  </ItemGroup>
+  -->
+
+  <!-- CLI -->
+  <!--
+  <ItemGroup>
+    <PackageVersion Include="System.CommandLine" Version="2.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+  </ItemGroup>
+  -->
+
+  <!-- Desktop (Avalonia) — this is a version-coupled ecosystem: bump Avalonia, Carbon, Phosphor
+       and the Fluent/theme packages TOGETHER, never one package at a time. Mixing versions within
+       the set breaks the build, so the whole group is held back until it moves as a unit. -->
+  <!--
+  <ItemGroup>
+    <PackageVersion Include="Avalonia" Version="12.0.0" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.0.0" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.0.0" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.0.0" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+    <PackageVersion Include="Carbon.Avalonia.Desktop" Version="0.2.0" />
+    <PackageVersion Include="PhosphorIconsAvalonia" Version="1.2.0" />
+  </ItemGroup>
+  -->
+
+  <!-- Tests (xUnit v3 on the Microsoft Testing Platform) -->
+  <!--
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
+    <PackageVersion Include="xunit.v3" Version="3.2.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+  </ItemGroup>
+  -->
+
+</Project>
