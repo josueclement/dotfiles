@@ -88,6 +88,27 @@ public partial class App : Application
 - Resolve root ViewModels/services from `host.Services` — never `new` them; keep XAML code-behind free of service instantiation.
 - Long-running background work: `IHostedService`/`BackgroundService` on the builder; marshal UI updates via `Dispatcher.UIThread` (see dotnet-async).
 
+## Application icon
+
+Ship one multi-resolution `.ico` under `Assets/` (16/32/48/256 px in a single file, so the taskbar icon isn't blurry) and wire it **two ways** — the built executable and the running window are separate concerns:
+
+```xml
+<!-- .csproj: embeds the icon in the Windows .exe; Windows-only — no effect on the Linux/macOS binary -->
+<PropertyGroup>
+  <ApplicationIcon>Assets/app.ico</ApplicationIcon>
+</PropertyGroup>
+<ItemGroup>
+  <AvaloniaResource Include="Assets/**" />
+</ItemGroup>
+```
+
+```xml
+<!-- MainWindow.axaml: runtime titlebar/taskbar icon on every platform — and the only one that does anything on Linux/macOS -->
+<Window ... Icon="/Assets/app.ico">
+```
+
+One `.ico`, referenced from both places: `<ApplicationIcon>` gives the `.exe` its icon (Explorer/taskbar show it even when the app isn't running), `Icon="/Assets/app.ico"` covers the running window everywhere. The `.ico` art is user-owned; `git-repo-hygiene` already marks `*.ico binary`.
+
 ## Compiled bindings (default ON in 12)
 
 - Plain `{Binding}` compiles; the **root of every view and every `DataTemplate` needs `x:DataType`** or the build fails: `x:DataType="vm:MainWindowViewModel"`.

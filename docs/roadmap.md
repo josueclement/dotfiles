@@ -17,4 +17,4 @@ The single, persistent registry of every work item in this project. Summary only
 | FEATURE-005 | `/build` prints roadmap when no ID | DONE        | docs/plan/FEATURE-005.md |
 | FEATURE-006 | `dotnet-solution-config` skill     | DONE        | docs/plan/FEATURE-006.md |
 | FEATURE-007 | `dotnet-release` skill             | DONE        | docs/plan/FEATURE-007.md |
-| FEATURE-008 | Avalonia app/window icon           | TODO        | docs/plan/FEATURE-008.md |
+| FEATURE-008 | Avalonia app/window icon           | DONE        | docs/plan/FEATURE-008.md |

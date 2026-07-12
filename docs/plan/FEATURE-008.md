@@ -1,6 +1,6 @@
 # FEATURE-008 — Avalonia app/window icon convention
 
-**Status:** TODO
+**Status:** DONE
 
 _Single-phase item. Planned via `/interview` (v7); build with `/build FEATURE-008`. Documentation/prompt change — no build/test step._
 
