@@ -1,6 +1,6 @@
 # FEATURE-010 — dotnet-release MSI profile generation (apps)
 
-**Status:** TODO
+**Status:** DONE
 
 _Single-phase item. Planned via `/interview` (v7); build with `/build FEATURE-010`. Documentation/prompt change to the `dotnet-release` skill — no build/test step._
 
