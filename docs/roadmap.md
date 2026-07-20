@@ -20,3 +20,4 @@ The single, persistent registry of every work item in this project. Summary only
 | FEATURE-008 | Avalonia app/window icon           | DONE        | docs/plan/FEATURE-008.md |
 | FEATURE-009 | dotnet-release TFM normalization   | DONE        | docs/plan/FEATURE-009.md |
 | FEATURE-010 | dotnet-release MSI profiles (apps) | DONE        | docs/plan/FEATURE-010.md |
+| FEATURE-0EF9 | Random-hex work-item IDs          | DONE        | docs/plan/FEATURE-0EF9.md |

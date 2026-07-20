@@ -5,7 +5,7 @@ description: Use when releasing a new version of a .NET library/app to NuGet —
 
 # .NET version release
 
-Drive a new NuGet library-version release end-to-end: make the in-repo edits (version, release notes, README, package metadata, selective dependency bumps), then **print** the out-of-repo runbook for the user to run. A release is the **final phase of a `FEATURE-NNN` work item** — defer to **dev-workflow** for the branch, the commit, tag/publish ownership, the roadmap/plan/`done` records, and the documentation-freshness sweep; this skill does not restate them.
+Drive a new NuGet library-version release end-to-end: make the in-repo edits (version, release notes, README, package metadata, selective dependency bumps), then **print** the out-of-repo runbook for the user to run. A release is the **final phase of a `FEATURE-HHHH` work item** — defer to **dev-workflow** for the branch, the commit, tag/publish ownership, the roadmap/plan/`done` records, and the documentation-freshness sweep; this skill does not restate them.
 
 ## When to use
 
@@ -167,7 +167,7 @@ Each `shortcuts[]` entry, in order: `shortcutPath` (`%Desktop%` / `%ProgramMenu%
 
 ## Cross-references
 
-- **dev-workflow** — the release is the final phase of a `FEATURE-NNN` item; it owns branch naming, the never-commit-myself rule, tag/publish ownership, the `docs/roadmap.md` + `docs/plan/` + `docs/done/` records, and the doc-freshness sweep.
+- **dev-workflow** — the release is the final phase of a `FEATURE-HHHH` item; it owns branch naming, the never-commit-myself rule, tag/publish ownership, the `docs/roadmap.md` + `docs/plan/` + `docs/done/` records, and the doc-freshness sweep.
 - **dotnet-solution-config** — the CPM `Directory.Packages.props` file this skill edits when refreshing dependency versions, and the coupled-ecosystem rule.
 - **dotnet-solution-setup** — the authority for choosing a project's target frameworks at creation time; this skill's release-time normalization keeps a multi-targeted library on the current `net8.0` + `net10.0` LTS pair.
 - **git-repo-hygiene** — `.gitignore` / `.gitattributes` / line-ending normalization.

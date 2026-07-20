@@ -1,6 +1,6 @@
 ---
 description: Implement a previously planned work item (FEATURE / BUG / CODE-REVIEW) from docs/roadmap.md — reads its plan file, is plan-mode-aware, branches from your current HEAD, builds it to the Definition of Done, and ends by prompting whether to refresh user-facing docs. The executor for plans written by /interview (which only plans).
-argument-hint: [<work-item ID, e.g. FEATURE-001>]
+argument-hint: [<work-item ID, e.g. FEATURE-3A7F>]
 disable-model-invocation: true
 ---
 
@@ -15,7 +15,7 @@ This project plans work up front with `/interview` (which **only plans — it ne
 ## Phase 0: Announce the version
 **Before anything else**, your very first output must be exactly this line, as plain text, on its own line and with nothing before it:
 
-Using build v4 by Josué Clément
+Using build v5 by Josué Clément
 
 Then proceed.
 
@@ -23,7 +23,7 @@ Then proceed.
 **Load and follow the `dev-workflow` skill** — it defines the roadmap, plan files, work-item IDs, branch naming, Definition of Done, version control, and sub-agent delegation rules you must apply. Everything below defers to it.
 
 ## Phase 2: Resolve the target item
-- **If I passed a work-item ID as the argument** (`$ARGUMENTS`), that is the target. A base ID (`FEATURE-001`, `BUG-003`, `CODE-REVIEW-001`) resolves to the item's next phase whose status is `TODO` or `IN PROGRESS` (for a multi-phase item), or to the item itself (for a single-phase one); a phase ID (`FEATURE-001-PHASE02`, `CODE-REVIEW-001-PHASE01`) targets that specific phase. If the ID isn't in the roadmap, stop and tell me — don't guess.
+- **If I passed a work-item ID as the argument** (`$ARGUMENTS`), that is the target. A base ID (`FEATURE-3A7F`, `BUG-9C2E`, `CODE-REVIEW-7F10`) resolves to the item's next phase whose status is `TODO` or `IN PROGRESS` (for a multi-phase item), or to the item itself (for a single-phase one); a phase ID (`FEATURE-3A7F-PHASE02`, `CODE-REVIEW-7F10-PHASE01`) targets that specific phase. If the ID isn't in the roadmap, stop and tell me — don't guess.
 - **If I passed nothing**, read `docs/roadmap.md` and **print the full roadmap table** to the console for me to choose from — do **not** call `AskUserQuestion` in this path:
   - Reproduce the roadmap's columns (ID · Title · Status · Plan) and print **every** item **and** phase row, with all statuses (`TODO`, `IN PROGRESS`, `DONE`, `ABANDONED`) — the full picture, not a capped list.
   - **Mark the recommended next build** (an annotation/marker, not a new column): the topmost `IN PROGRESS` item, else the topmost `TODO`.
